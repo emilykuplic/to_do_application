@@ -14,8 +14,9 @@ getTasks();
         sendTask.task = $('#task').val();
 
       // call saveTask with the new obejct
-      saveTask(sendTask);
       getTasks();
+      saveTask(sendTask);
+
     }); //end addButton on click
 
     // Function called when delete button is clicked
@@ -30,15 +31,10 @@ getTasks();
     // Function called when complete button is clicked
     $('#updateTasks').on('click', '.completeBtn', function(){
       console.log('completed button clicked');
-      task.id = doneTaskId;
-      doneTask = true;
-      // We attached the entire book object as data to our table row
-      // $(this).parent() is the <td>
-      // $(this).parent().parent() is the <tr> that we attached our data to
-      var completeTask = $(this).parent().parent().data('task');
-      console.log(completeTask);
-      doneTaskId = completeTask.id;
-      updateTask(completeTask);
+      var taskId = $(this).data('completetask');
+      console.log($(this));
+      console.log('Delete task with id of', completetask);
+      updateTask(completetask);
     });
 
 
