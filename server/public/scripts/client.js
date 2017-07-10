@@ -21,7 +21,7 @@ getTasks();
     // Function called when delete button is clicked
     $('#updateTasks').on('click', '.deleteBtn', function(){
       // We attached the bookid as data on our button
-      var taskId = $(this).data('completetask');
+      var taskId = $(this).data('taskid');
       console.log($(this));
       console.log('Delete task with id of', taskId);
       deleteTask(taskId);
