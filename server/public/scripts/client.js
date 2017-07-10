@@ -1,4 +1,6 @@
 console.log( 'js' );
+var doneTask = false;
+var doneTaskId;
 
 $( document ).ready( function(){
   console.log( 'JQ' );
@@ -13,27 +15,30 @@ getTasks();
 
       // call saveTask with the new obejct
       saveTask(sendTask);
+      getTasks();
     }); //end addButton on click
 
     // Function called when delete button is clicked
     $('#updateTasks').on('click', '.deleteBtn', function(){
       // We attached the bookid as data on our button
-      var taskId = $(this).data('taskid');
+      var taskId = $(this).data('completetask');
       console.log($(this));
       console.log('Delete task with id of', taskId);
       deleteTask(taskId);
     });
 
     // Function called when complete button is clicked
-    $('#updatesTasks').on('click', '.completeBtn', function(){
-      // Set editng to true, used when we submit the form
-      completeTask = true;
+    $('#updateTasks').on('click', '.completeBtn', function(){
+      console.log('completed button clicked');
+      task.id = doneTaskId;
+      doneTask = true;
       // We attached the entire book object as data to our table row
       // $(this).parent() is the <td>
       // $(this).parent().parent() is the <tr> that we attached our data to
-      var selectedTask = $(this).parent().parent().data('task');
-      console.log(selectedTask);
-      selectedTaskId = selectedTask.id;
+      var completeTask = $(this).parent().parent().data('task');
+      console.log(completeTask);
+      doneTaskId = completeTask.id;
+      updateTask(completeTask);
     });
 
 
@@ -70,14 +75,15 @@ function getTasks(){
 
 
 // UPDATE a.k.a. PUT
-function updateTask(taskToUpdate) {
+function updateTask(completeTask) {
+  console.log('In updateTask', completeTask);
   // YOUR AJAX CODE HERE
   $.ajax({
     type: 'PUT',
     url: '/todo',
-    data: taskToUpdate,
-    success: function(response){
-
+    data: completeTask,
+    success: function(data){
+    console.log('Completed Task:', data);
     }
 });
 }
@@ -85,13 +91,13 @@ function updateTask(taskToUpdate) {
 // DELETE
 function deleteTask(taskId) {
   // When using URL params, your url would be...
-  // '/books/' + bookId
   // YOUR AJAX CODE HERE
   $.ajax({
     type: 'DELETE',
     url: '/todo/' + taskId,
     success: function(response) {
       console.log(response);
+      getTasks();
 }
 });
 
@@ -107,7 +113,7 @@ function appendToDom(task){
     $tr = $('<tr></tr>');
     $tr.data('task', task);
     $tr.append('<td>' + tasks.task + '</td>');
-    $tr.append('<td><button class="completeBtn" data-taskid="' + tasks.id + '">Edit</button></td>');
+    $tr.append('<td><button class="completeBtn" data-completetask="' + tasks.id + '">Task Complete</button></td>');
     $tr.append('<td><button class="deleteBtn" data-taskid="' + tasks.id + '">Delete</button></td>');
 
     $('#updateTasks').append($tr);

@@ -80,8 +80,8 @@ router.get('/', function(req, res){
 
 // PUT is similar to POST when using PG
 router.put('/', function(req, res){
-  var task = req.body; // Book with updated content
-  console.log('Put route called with task of ', task);
+  var complete = req.body;
+  console.log('Put route called with task of ', complete);
   // errorConnecting is bool, db is what we query against,
   // done is a function that we call when we're done
   pool.connect(function(errorConnectingToDatabase, db, done){
@@ -93,7 +93,7 @@ router.put('/', function(req, res){
       // Now we're going to GET things from the db
       var queryText = 'UPDATE "todo" SET "complete" = $1 WHERE "id" = $2;';
       // errorMakingQuery is a bool, result is an object
-      db.query(queryText, [True, task.id], function(errorMakingQuery, result){
+      db.query(queryText, [true, complete.data], function(errorMakingQuery, result){
         done();
         if(errorMakingQuery) {
           console.log('Attempted to query with', queryText);
