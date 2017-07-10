@@ -89,7 +89,6 @@ router.put('/', function(req, res){
       console.log('Error connecting to the database.');
       res.sendStatus(500);
     } else {
-      // We connected to the database!!!
       // Now we're going to GET things from the db
       var queryText = 'UPDATE "todo" SET "complete" = $1 WHERE "id" = $2;';
       // errorMakingQuery is a bool, result is an object
